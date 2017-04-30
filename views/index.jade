@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  form(name="sign-in", method="post", action='/authenticate')
+    div.input
+      span.label Email
+      input(type="email", name="email", placeholder="Enter email")
+    div.input
+      span.label Password
+      input(type="password", name="password", placeholder="Enter Password")
+    div.actions
+      input(type="submit", value="Submit")
