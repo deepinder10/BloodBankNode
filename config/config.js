@@ -8,6 +8,6 @@ var con = sql.createConnection({
     user     : 'sql9172740',
     password : 'HBFbHvEzFq',
     database : 'sql9172740'
-})
+});
 
 module.exports = con;

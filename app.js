@@ -4,13 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var jwt    = require('jsonwebtoken');
 
 var index = require('./routes/index');
-var users = require('./routes/users');
 var authenticate = require('./routes/authenticate');
-var config = require('./config/config.js');
+var config = require('./config/config');
+var requests = require('./routes/requests');
 
 var app = express();
+var apiRoutes = express.Router();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,8 +28,43 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
-app.use('/users', users);
+app.use('/api', apiRoutes);
 app.use('/authenticate', authenticate);
+app.use('/api/requests', requests);
+
+// route middleware to verify a token
+apiRoutes.use(function(req, res, next) {
+
+    // check header or url parameters or post parameters for token
+    var token = req.body.token || req.query.token || req.headers['access-token'];
+
+    // decode token
+    if (token) {
+
+        // verifies secret and checks exp
+        jwt.verify(token, 'secret', function(err, decoded) {
+            if (err) {
+                return res.json({ success: false, message: 'Failed to authenticate token.' });
+            } else {
+                // if everything is good, save to request for use in other routes
+                req.decoded = decoded;
+                next();
+            }
+        });
+
+    } else {
+
+        // if there is no token
+        // return an error
+        return res.status(403).send({
+            success: false,
+            message: 'No token provided.'
+        });
+
+    }
+});
+
+// apply the routes to our application with the prefix /api
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

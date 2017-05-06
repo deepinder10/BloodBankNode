@@ -5,7 +5,6 @@ var express = require('express');
 var router = express.Router();
 var con = require('../config/config.js');
 var jwt    = require('jsonwebtoken');
-var app = require('../app.js');
 
 router.post('/', function(req, res, next) {
 
