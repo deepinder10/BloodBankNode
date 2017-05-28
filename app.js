@@ -11,6 +11,7 @@ var authenticate = require('./routes/authenticate');
 var config = require('./config/config');
 var requests = require('./routes/requests');
 var register = require('./routes/register');
+var requestCreate = require('./routes/requestCreate');
 
 var app = express();
 var apiRoutes = express.Router();
@@ -32,6 +33,7 @@ app.use('/', index);
 app.use('/api', apiRoutes);
 app.use('/authenticate', authenticate);
 app.use('/api/requests', requests);
+app.use('/requestCreate', requestCreate);
 app.use('/register',register);
 
 // route middleware to verify a token
@@ -46,7 +48,7 @@ apiRoutes.use(function(req, res, next) {
         // verifies secret and checks exp
         jwt.verify(token, 'secret', function(err, decoded) {
             if (err) {
-                return res.json({ success: false, message: 'Failed to authenticate token.' });
+                return res.json({ flag: 101, message: 'Failed to authenticate token.' });
             } else {
                 // if everything is good, save to request for use in other routes
                 req.decoded = decoded;
@@ -59,7 +61,7 @@ apiRoutes.use(function(req, res, next) {
         // if there is no token
         // return an error
         return res.status(403).send({
-            success: false,
+            flag: 101,
             message: 'No token provided.'
         });
 

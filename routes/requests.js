@@ -9,7 +9,7 @@ var jwt    = require('jsonwebtoken');
 router.post('/', function(req, res, next) {
 
 
-    con.query("SELECT * FROM requestes",function (err,rows) {
+    con.query("SELECT * FROM requestes ORDER BY `req_id` DESC;",function (err,rows) {
         if(err) throw err;
         if (!rows.length) {
             res.json({ flag: 144, message: 'Error Fetching data' });
