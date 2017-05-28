@@ -10,6 +10,7 @@ var index = require('./routes/index');
 var authenticate = require('./routes/authenticate');
 var config = require('./config/config');
 var requests = require('./routes/requests');
+var register = require('./routes/register');
 
 var app = express();
 var apiRoutes = express.Router();
@@ -31,6 +32,7 @@ app.use('/', index);
 app.use('/api', apiRoutes);
 app.use('/authenticate', authenticate);
 app.use('/api/requests', requests);
+app.use('/register',register);
 
 // route middleware to verify a token
 apiRoutes.use(function(req, res, next) {
