@@ -62,9 +62,9 @@ router.post('/', function(req, res) {
                 break;
         }
 
-        if (err) {
+        if (err) 
             return res.send({flag: 144, message: 'Failed to add request.', error: err});
-        }
+        
 
         try {
             twilioMessage(blood_id,b_id,hospital,name);
@@ -76,14 +76,12 @@ router.post('/', function(req, res) {
             message: 'Request Created Successfully'
 
         });
-
-        
-
+    
     });
 });
 
 function twilioMessage(blood_id,b_id,hospital,name) {
-    let c = con.query("select `mobile` from donarregistration where b_id =" + blood_id,function (err,result) {
+    let c = con.query("SELECT `mobile` FROM donarregistration WHERE b_id =" + blood_id,function (err,result) {
 
         if(result.length){
             result.forEach(function (item) {
@@ -100,11 +98,11 @@ function twilioMessage(blood_id,b_id,hospital,name) {
                         to: '+91'+item.mobile,  // Text this number
                         from: '+14402204590' // From a valid Twilio number
                     }), function(err, message) {
-                        if (err) {
+                        if (err) 
                             console.error('Text failed because: ' + err.message);
-                        } else {
+                         else 
                             console.log('Text sent! Message SID: ' + message.sid);
-                        }
+                        
                     }
                 }catch(e){
                     console.log(e)
